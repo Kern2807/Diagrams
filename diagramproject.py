@@ -40,4 +40,4 @@ with Diagram(name="", show=False):
     with Cluster("r"):
         slda = [Datadog("Datadog monitoring "),
                 Slack("Slack")]
-    primary >> slda
+    primary >> Edge(color="black") >> slda
