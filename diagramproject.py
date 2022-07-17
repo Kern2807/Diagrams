@@ -8,7 +8,13 @@ from diagrams.onprem.network import Internet
 from diagrams.saas.chat import Slack
 from diagrams.onprem.monitoring import Datadog
 from diagrams.aws.network import ALB
-with Diagram(name="", show=False):
+graph_attr = {
+    "layout": "dot",
+    "concentrate": "true",
+    "compound": "true",
+    "splines": "spline",
+}
+with Diagram(name="", graph_attr=graph_attr, show=False):
     net = Internet("Internet")
 
 
@@ -16,28 +22,28 @@ with Diagram(name="", show=False):
     Gith << Edge(color="Black") << Users("Users")
 
     with Cluster("PROD VPC"):
-        with Cluster("x"):
+        with Cluster("> Loadbalancer"):
             alb = [ALB("ALB")]
-            net >> alb
+            net >> Edge(color="black") >> alb
 
-        with Cluster("y"):
+        with Cluster("EC2 Servers"):
             apa = EC2("Apache Webserver")
             mid = EC2("Middleware")
-            apa >> mid
+            apa >> Edge(color="black", style=("dotted")) >> mid
 
 
         alb >> Edge(color="black") >> apa
         s3 = S3("S3")
-        apa >> s3
-        mid >> s3
-        with Cluster("z"):
+        apa >> Edge(color="black") >> s3
+        mid >> Edge(color="black") >> s3
+        with Cluster("Database"):
             primary = RDS("Database")
 
         mid >> Edge(color="black") >> primary
 
-        Gith >> mid
-        Gith >> apa
-    with Cluster("r"):
+        Gith >> Edge(color="black") >> mid
+        Gith >> Edge(color="black") >> apa
+    with Cluster("Notifications"):
         slda = [Datadog("Datadog monitoring "),
                 Slack("Slack")]
     primary >> Edge(color="black") >> slda
