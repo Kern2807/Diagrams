@@ -26,8 +26,7 @@ with Diagram("", show=False):
         with Cluster(""):
             data = [RDS("Database")]
 
-    store = S3("events store")
-    dw = Redshift("analytics")
+    
 
     with Cluster(""):
         abc = [Datadog("Datadog"),
@@ -35,7 +34,7 @@ with Diagram("", show=False):
 
 
 
-    net >> alb >> apa 
+    net >> alb >> apa
     data >> abc
     apa >> s3
     EC2("Apache Webserver") >> EC2("Middleware")
