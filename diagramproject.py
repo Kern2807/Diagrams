@@ -17,14 +17,14 @@ with Diagram(name="", show=False):
 
     with Cluster("PROD VPS"):
         with Cluster("x"):
-            alb = [ALB("")]
+            alb = [ALB("ALB")]
             net >> alb
 
         with Cluster("y"):
             apa = EC2("Apache Webserver")
             mid = EC2("Middleware")
             apa >> mid
-            
+
 
         alb >> Edge(color="black") >> apa
         s3 = S3("S3")
