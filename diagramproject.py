@@ -1,4 +1,4 @@
-from diagrams import Cluster, Diagram
+from diagrams import Cluster, Diagram, Edge
 from diagrams.aws.compute import EC2
 from diagrams.aws.database import RDS
 from diagrams.onprem.vcs import Git
@@ -8,31 +8,38 @@ from diagrams.onprem.network import Internet
 from diagrams.saas.chat import Slack
 from diagrams.onprem.monitoring import Datadog
 from diagrams.aws.network import ALB
-with Diagram("", show=False):
+with Diagram(name="", show=False):
     net = Internet("Internet")
 
-    with Cluster("PROD VPS"):
-        with Cluster("y"):
-            alb = [ALB(""),
-                      ]
 
-        sec = S3("")
-
-        with Cluster("x"):
-            apa = [EC2("Apache Webserver"),
-            EC2("Middleware")]
-
-
-        with Cluster(""):
-            data = [RDS("Database")]
-
-    with Cluster("z"):
-        slda = [Datadog("Datadog Monitor"),
-                Slack("Slack")]
     Gith = Git("Github")
-    dw = Users("Users")
+    Gith << Edge(color="Black") << Users("Users")
 
-    net >> alb >> sec >> apa
-    Gith << dw
-    Gith >> apa
-    data >> slda
+    with Cluster("PROD VPS"):
+        with Cluster("x"):
+            alb = [ALB("")]
+            net >> alb
+
+        with Cluster("y"):
+            apa = EC2("Apache Webserver")
+            mid = EC2("Middleware")
+            apa >> mid
+            #>> Edge(color="black") \
+            #>> EC2("Middleware") \
+            #>> mid
+
+        alb >> Edge(color="black") >> apa
+        s3 = S3("S3")
+        apa >> s3
+        mid >> s3
+        with Cluster("z"):
+            primary = RDS("Database")
+
+        mid >> Edge(color="black") >> primary
+
+        Gith >> mid
+        Gith >> apa
+    with Cluster("r"):
+        slda = [Datadog("Datadog monitoring "),
+                Slack("Slack")]
+    primary >> slda
