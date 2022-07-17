@@ -15,7 +15,7 @@ with Diagram(name="", show=False):
     Gith = Git("Github")
     Gith << Edge(color="Black") << Users("Users")
 
-    with Cluster("PROD VPS"):
+    with Cluster("PROD VPC"):
         with Cluster("x"):
             alb = [ALB("ALB")]
             net >> alb
