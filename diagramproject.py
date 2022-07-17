@@ -24,9 +24,7 @@ with Diagram(name="", show=False):
             apa = EC2("Apache Webserver")
             mid = EC2("Middleware")
             apa >> mid
-            #>> Edge(color="black") \
-            #>> EC2("Middleware") \
-            #>> mid
+            
 
         alb >> Edge(color="black") >> apa
         s3 = S3("S3")
