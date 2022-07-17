@@ -11,35 +11,28 @@ from diagrams.aws.network import ALB
 with Diagram("", show=False):
     net = Internet("Internet")
 
-    with Cluster("PROD VPC"):
-        with Cluster(""):
-            alb = [ALB("")]
+    with Cluster("PROD VPS"):
+        with Cluster("y"):
+            alb = [ALB(""),
+                      ]
 
-        with Cluster(""):
+        sec = S3("")
+
+        with Cluster("x"):
             apa = [EC2("Apache Webserver"),
-                        EC2("Middleware")]
-
-        s3 = S3("")
-
+            EC2("Middleware")]
 
 
         with Cluster(""):
             data = [RDS("Database")]
 
-
-        with Cluster(""):
-            abc = [Datadog("Datadog"),
+    with Cluster("z"):
+        slda = [Datadog("Datadog Monitor"),
                 Slack("Slack")]
+    Gith = Git("Github")
+    dw = Users("Users")
 
-        gith = Git("Github")
-        user = Users("Users")
-
-
-
-    net >> alb >> apa
-    data >> abc
-    apa >> s3
-    EC2("Apache Webserver") >> EC2("Middleware")
-    EC2("Middleware") >> data
-    user >> gith
-    gith >> apa
+    net >> alb >> sec >> apa
+    Gith << dw
+    Gith >> apa
+    data >> slda
