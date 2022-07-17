@@ -7,7 +7,7 @@ from diagrams.aws.storage import S3
 from diagrams.onprem.network import Internet
 from diagrams.saas.chat import Slack
 from diagrams.onprem.monitoring import Datadog
-from diagram.aws.network import ALB
+from diagrams.aws.network import ALB
 with Diagram("", show=False):
     net = Internet("Internet")
 
