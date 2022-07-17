@@ -26,11 +26,13 @@ with Diagram("", show=False):
         with Cluster(""):
             data = [RDS("Database")]
 
-    
 
-    with Cluster(""):
-        abc = [Datadog("Datadog"),
+        with Cluster(""):
+            abc = [Datadog("Datadog"),
                 Slack("Slack")]
+
+        gith = Git("Github")
+        user = Users("Users")
 
 
 
@@ -39,3 +41,5 @@ with Diagram("", show=False):
     apa >> s3
     EC2("Apache Webserver") >> EC2("Middleware")
     EC2("Middleware") >> data
+    user >> gith
+    gith >> apa
